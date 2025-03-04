@@ -94,8 +94,8 @@ class NeakasaCoordinator(DataUpdateCoordinator):
         try:
             await self.api.connect(self.username, self.password)
             devicedata = await self.api.getDeviceProperties(self.deviceid)
-            devicetsl = await self.api.getTsl(self.deviceid)
-            _LOGGER.debug(devicetsl)
+            # devicetsl = await self.api.getTsl(self.deviceid)
+            # _LOGGER.debug(devicetsl)
             try:
                 return NeakasaAPIData(
                     binFullWaitReset=devicedata['binFullWaitReset']['value'] == 1, #-> Abfalleimer voll
