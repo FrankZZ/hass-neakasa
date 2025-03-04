@@ -10,7 +10,9 @@ import hmac
 import hashlib
 import base64
 import uuid
+import logging
 
+_LOGGER = logging.getLogger(__name__)
 #############################
 # Neakasa API by @timniklas #
 #############################
@@ -303,6 +305,10 @@ class NeakasaAPI:
             },
             request=request
         )
+        _LOGGER.debug("client")
+        _LOGGER.debug(client)
+        _LOGGER.debug("body")
+        _LOGGER.debug(body)
         # send request
         response = await self.hass.async_add_executor_job(client.do_request,
             '/thing/properties/get',

@@ -12,5 +12,5 @@
     "alibabacloud_iot_api_gateway",
     "alibabacloud_tea_util"
   ],
-  "version": "1.0.8"
+  "version": "1.0.9-alpha1"
 }
