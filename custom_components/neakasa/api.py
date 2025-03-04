@@ -305,10 +305,6 @@ class NeakasaAPI:
             },
             request=request
         )
-        _LOGGER.debug("client")
-        _LOGGER.debug(client)
-        _LOGGER.debug("body")
-        _LOGGER.debug(body)
         # send request
         response = await self.hass.async_add_executor_job(client.do_request,
             '/thing/properties/get',
@@ -321,6 +317,37 @@ class NeakasaAPI:
         response_data = json.loads(response.body)
         if response_data['code'] != 200:
             raise APIConnectionError("Error getting device properties: " + response_data['message'])
+        return response_data['data']
+
+    async def getTsl(self, iotId: str):
+        if self.connected == False:
+            raise APIConnectionError("api not connected")
+        config = Config(
+            app_key=self._app_key,
+            app_secret=self._app_secret,
+            domain=self.apiGatewayEndpoint
+        )
+        client = Client(config)
+        request = CommonParams(api_ver='1.0.2', language=self._language, iot_token=self._iotToken)
+        body = IoTApiRequest(
+            version="1.0",
+            params={
+                "iotId": iotId
+            },
+            request=request
+        )
+        # send request
+        response = await self.hass.async_add_executor_job(client.do_request,
+            '/thing/tsl/get',
+            'https',
+            'POST',
+            None,
+            body,
+            RuntimeOptions()
+        )
+        response_data = json.loads(response.body)
+        if response_data['code'] != 200:
+            raise APIConnectionError("Error getting device tsl: " + response_data['message'])
         return response_data['data']
 
     async def setDeviceProperties(self, iotId: str, items: dict[str, any]):
